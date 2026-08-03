@@ -40,7 +40,7 @@ class TestReadyEndpoint:
         response = await client.get("/ready")
         body = response.json()
         assert body["data"]["status"] in ("ok", "degraded")
-        assert body["data"]["database"] == "not_configured"
+        assert body["data"]["database"] == "connected"
 
 
 class TestErrorHandling:

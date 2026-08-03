@@ -16,7 +16,11 @@ class Settings(BaseSettings):
     debug: bool = False
     log_level: str = "INFO"
 
-    database_url: str = "postgresql+asyncpg://postgres:chronoarb@localhost:5432/chronoarb"
+    # Default is SQLite (aiosqlite) for local development.
+    # PostgreSQL async drivers (asyncpg, psycopg) have unresolved compatibility
+    # issues with Python 3.14 as of 2026-08-03. Production must override via
+    # CHRONOARB_DATABASE_URL=postgresql+asyncpg://... (CI runs Python 3.13).
+    database_url: str = "sqlite+aiosqlite:///chronoarb.db"
 
 
 settings = Settings()

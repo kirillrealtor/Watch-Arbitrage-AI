@@ -34,3 +34,6 @@ build/
 *~
 .sentry-native/
 .venv
+*.db
+*.sqlite
+*.sqlite3
