@@ -353,10 +353,15 @@ CREATE INDEX idx_normalized_listings_ref ON normalized_listings(reference_id, st
 CREATE INDEX idx_normalized_listings_active ON normalized_listings(status, reference_id)
   WHERE status = 'active';
 
--- Idempotency lookups
-CREATE INDEX idx_alert_deliveries_idem ON alert_deliveries(idempotency_key);
-CREATE INDEX idx_feedbacks_idem ON feedbacks(idempotency_key);
-CREATE INDEX idx_trade_outcomes_idem ON trade_outcomes(idempotency_key);
+-- Delivery by organization + user
+CREATE INDEX idx_alert_deliveries_org_user ON alert_deliveries(organization_id, user_id, created_at DESC);
+-- Delivery by opportunity + material version
+CREATE INDEX idx_alert_deliveries_opp ON alert_deliveries(opportunity_id, material_version);
+
+-- Note: Standalone idempotency_key indexes on alert_deliveries, feedbacks,
+-- and trade_outcomes are intentionally excluded. The UNIQUE constraints on
+-- those columns automatically create B-tree indexes with equivalent coverage.
+-- Creating a second index on the same column would be redundant overhead.
 
 -- Outbox publishing
 CREATE INDEX idx_outbox_pending ON outbox_events(status, created_at)
