@@ -232,16 +232,17 @@ alert_rules
 └── updated_at         TIMESTAMPTZ
 
 alert_deliveries
-├── id (PK)            ULID
-├── rule_id            FK → alert_rules.id
-├── user_id            FK → users.id
-├── opportunity_id     FK → opportunities.id
-├── channel            TEXT NOT NULL       (telegram, push)
-├── idempotency_key    TEXT UNIQUE NOT NULL
-├── delivery_status    ENUM(pending, sent, failed, suppressed)
-├── provider_message_id TEXT
-├── created_at         TIMESTAMPTZ
-└── UNIQUE(rule_id, user_id, opportunity_id, channel, material_version)
+├── id (PK)              ULID
+├── organization_id       FK → organizations.id NOT NULL
+├── rule_id               FK → alert_rules.id NOT NULL
+├── user_id               FK → users.id NOT NULL
+├── opportunity_id        FK → opportunities.id NOT NULL
+├── material_version      INT NOT NULL
+├── channel               TEXT NOT NULL       (telegram, push)
+├── idempotency_key       TEXT UNIQUE NOT NULL
+├── delivery_status       ENUM(pending, sent, failed, suppressed)
+├── provider_message_id   TEXT
+└── created_at            TIMESTAMPTZ
 ```
 
 ### 2.9 Feedback and Outcomes
