@@ -103,10 +103,12 @@ class SourceAdapter(Protocol):
 
 ### D4: Enforcement via import-linter
 
-CI shall run `import-linter` (Python) with a contract that enforces the complete dependency graph:
+CI shall run `import-linter` (Python) with four contracts that enforce the complete dependency graph. The `.importlinter` configuration at the repository root contains:
+
+**Contract 1 — Layer definitions (chronoarb):**
+Defines the valid dependency order between Python packages. Layers lower in the list may depend on layers above them in the list.
 
 ```ini
-# .importlinter
 [importlinter:contract:chronoarb]
 name = ChronoArb package boundaries
 type = layers
@@ -116,7 +118,12 @@ layers =
     source-adapters
     api
     worker
+```
 
+**Contract 2 — Domain isolation (chronoarb-domain-isolation):**
+Enforces that `chronoarb.domain` (domain-python) never imports from `chronoarb.adapters` (source-adapters) or any `apps/` module.
+
+```ini
 [importlinter:contract:chronoarb-domain-isolation]
 name = Domain must not import adapters or apps
 type = forbidden
@@ -126,6 +133,35 @@ forbidden_modules =
     chronoarb.adapters
     apps.api
     apps.worker
+```
+
+**Contract 3 — Adapter isolation (chronoarb-adapter-isolation):**
+Enforces that `chronoarb.adapters` (source-adapters) never imports from any `apps/` module.
+
+```ini
+[importlinter:contract:chronoarb-adapter-isolation]
+name = Adapters must not import apps
+type = forbidden
+source_modules =
+    chronoarb.adapters
+forbidden_modules =
+    apps.api
+    apps.worker
+```
+
+**Contract 4 — Cross-app isolation (chronoarb-cross-app-isolation):**
+Enforces that `apps/api` and `apps/worker` never import from each other.
+
+```ini
+[importlinter:contract:chronoarb-cross-app-isolation]
+name = Apps must not import other apps
+type = forbidden
+source_modules =
+    apps.api
+    apps.worker
+forbidden_modules =
+    apps.worker
+    apps.api
 ```
 
 ---

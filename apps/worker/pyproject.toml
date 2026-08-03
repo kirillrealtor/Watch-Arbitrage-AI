@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chronoarb-worker"
+version = "0.1.0"
+description = "ChronoArb async worker processes for ingestion and pipeline stages"
+requires-python = ">=3.13"
+dependencies = [
+    "chronoarb-domain",
+    "chronoarb-adapters",
+    "sqlalchemy[asyncio]>=2.0,<3",
+    "asyncpg>=0.30,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<10",
+    "ruff>=0.8,<1",
+    "mypy>=2,<3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["apps"]

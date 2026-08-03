@@ -66,9 +66,47 @@
 
 ---
 
-## 3. API Route Map
+## 3. Operational Endpoints
 
-### 3.1 Identity (`/api/v1/identity`)
+Operational endpoints serve infrastructure and deployment needs — load balancer health checks, ECS task readiness probes, and monitoring systems. They are not part of the customer-facing API contract.
+
+### 3.1 Envelope Distinction
+
+Operational endpoints use a **simplified response format** that omits the `meta` wrapper. The `trace_id` is embedded directly in the response data:
+
+```
+GET /health
+→ { "data": { "status": "ok", "trace_id": "trc_01J..." } }
+
+GET /ready
+→ { "data": { "status": "ok", "database": "connected", "trace_id": "trc_01J..." } }
+```
+
+This is intentional: operational endpoints are consumed by machines (ALB target group health checks, ECS health checks, monitoring agents) that do not parse the full API envelope. Including a `meta` wrapper would break every standard health-check consumer.
+
+### 3.2 Customer vs Operational Envelope
+
+| Concern | Customer API (`/api/v1/*`) | Operational (`/health`, `/ready`) |
+|---------|---------------------------|-----------------------------------|
+| Envelope | `{ "data": ..., "meta": { "trace_id": "..." } }` | `{ "data": { ..., "trace_id": "..." } }` |
+| Authentication | Required (JWT) | None |
+| Rate limiting | Applied | Excluded |
+| OpenAPI schema | Included | Excluded (`include_in_schema=False`) |
+| Error format | `{ "error": { "code": "..." } }` | Standard HTTP status codes |
+| Consumers | Browser, mobile app | Load balancer, ECS, monitoring |
+
+### 3.3 Endpoint Listing
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET | `/health` | Liveness probe — returns 200 if the process is running |
+| GET | `/ready` | Readiness probe — returns 200 if the process can serve traffic (database reachable) |
+
+---
+
+## 4. API Route Map
+
+### 4.1 Identity (`/api/v1/identity`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -81,7 +119,7 @@
 | PATCH | `/identity/organizations/{org_id}/members/{user_id}` | Change role |
 | DELETE | `/identity/organizations/{org_id}/members/{user_id}` | Remove member |
 
-### 3.2 Catalog (`/api/v1/catalog`)
+### 4.2 Catalog (`/api/v1/catalog`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -94,7 +132,7 @@
 | PUT | `/catalog/watch-lists/{id}` | Update watch list |
 | DELETE | `/catalog/watch-lists/{id}` | Delete watch list |
 
-### 3.3 Opportunities (`/api/v1/opportunities`)
+### 4.3 Opportunities (`/api/v1/opportunities`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -104,13 +142,13 @@
 | GET | `/opportunities/{opp_id}/history` | Material version history |
 | POST | `/opportunities/{opp_id}/trade-outcome` | Record realized trade outcome |
 
-### 3.4 Watches (`/api/v1/watches`)
+### 4.4 Watches (`/api/v1/watches`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
 | GET | `/watches/{ref_id}/market` | Market detail: valuation bands, comps, price history |
 
-### 3.5 Alerts (`/api/v1/alerts`)
+### 4.5 Alerts (`/api/v1/alerts`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -122,14 +160,14 @@
 | POST | `/alerts/rules/{rule_id}/test` | Send test notification |
 | GET | `/alerts/deliveries` | Alert delivery history |
 
-### 3.6 Activity (`/api/v1/activity`)
+### 4.6 Activity (`/api/v1/activity`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
 | GET | `/activity` | Team activity feed (decisions, outcomes) |
 | GET | `/activity/outcomes` | Recorded trade outcomes |
 
-### 3.7 Settings (`/api/v1/settings`)
+### 4.7 Settings (`/api/v1/settings`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -141,7 +179,7 @@
 | POST | `/settings/integrations/push` | Register device token |
 | DELETE | `/settings/integrations/push/{token}` | Unregister device |
 
-### 3.8 Billing (`/api/v1/billing`)
+### 4.8 Billing (`/api/v1/billing`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -150,7 +188,7 @@
 | POST | `/billing/portal` | Create Stripe Customer Portal session |
 | POST | `/billing/webhook` | Stripe webhook (unauthenticated, signature-verified) |
 
-### 3.9 Operations (`/api/v1/admin`)
+### 4.9 Operations (`/api/v1/admin`)
 
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -168,7 +206,7 @@
 | GET | `/admin/duplicates` | Duplicate review queue |
 | GET | `/admin/audit` | Audit event log |
 
-### 3.10 WebSocket
+### 4.10 WebSocket
 
 | Endpoint | Purpose |
 |----------|---------|
@@ -182,7 +220,7 @@
 
 ---
 
-## 4. Pagination
+## 5. Pagination
 
 Cursor-based pagination for all mutable feeds:
 
@@ -203,7 +241,7 @@ GET /api/v1/opportunities?cursor=cur_01J...&limit=50&sort=score_desc
 
 ---
 
-## 5. Idempotency
+## 6. Idempotency
 
 Retryable write endpoints accept `Idempotency-Key` header:
 
@@ -217,7 +255,7 @@ Idempotency-Key: idem_01JDEF...
 
 ---
 
-## 6. OpenAPI Generation
+## 7. OpenAPI Generation
 
 - OpenAPI spec generated from Pydantic v2 models using FastAPI's built-in support.
 - Spec committed to `docs/api/openapi.yaml`.
@@ -228,7 +266,7 @@ Idempotency-Key: idem_01JDEF...
 
 ---
 
-## 7. Authorization Model
+## 8. Authorization Model
 
 Every protected endpoint requires:
 1. Valid JWT (validated against Cognito JWKS)

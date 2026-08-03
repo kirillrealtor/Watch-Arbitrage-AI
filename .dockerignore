@@ -1,0 +1,17 @@
+node_modules/
+.pnpm-store/
+dist/
+.next/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.git/
+.terraform/
+*.tfstate
+.env
+.env.*
+*.log
