@@ -1,0 +1,13 @@
+{
+  "name": "@chronoarb/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ChronoArb framework-neutral design tokens",
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
