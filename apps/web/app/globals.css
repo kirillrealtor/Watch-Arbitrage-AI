@@ -1,36 +1,14 @@
+@layer theme, base, mui, components, utilities;
 @import "tailwindcss";
 
 /* 
-  Global CSS Baseline for F1A Foundation.
-  Do not define final product tokens here yet.
+  Global CSS Baseline for F2 MUI Foundation.
+  ChronoArb CSS layers and structural rules.
 */
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  color: #111827;
-  font-family: system-ui, -apple-system, sans-serif;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
-/* Universal focus outline foundation for keyboard accessibility */
-*:focus-visible {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-
-/* Reduced motion preference */
+/* 
+  Reduced motion preference fallback (MUI also handles its components).
+*/
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
