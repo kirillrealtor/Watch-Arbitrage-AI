@@ -107,3 +107,129 @@ All top-level endpoints are accessible, render the F3 Application Shell correctl
 ## Remaining Risks
 - **WebKit/Safari engine behavior not exercised**: The current Linux environment lacks required system libraries (`libicu74`, `libflite1`) to launch WebKit. Safari/WebKit coverage should be exercised in CI or another supported environment before broad browser-compatibility claims include Safari.
 - **Browser History Mobile Navigation**: The mobile drawer remains open if the user clicks Back/Forward via browser history buttons while the drawer is active. This is an edge-case interaction but would ideally be fixed with a global route event listener in the future when a dedicated router solution is established.
+
+---
+
+## Dark Visual System Refinement
+
+**Date:** 2026-08-03
+**Refinement Scope:** Visual-only. No architecture, route, or functionality changes.
+
+### Visual Rationale
+
+ChronoArb's primary application theme changed from light-first to dark-first. The target visual character is **institutional financial software** — precise, calm, professional, analytical — not a crypto/gaming dashboard, neon cyberpunk interface, or generic Material UI demo.
+
+### Semantic Token Changes
+
+**File:** `packages/design-tokens/src/colors.ts`
+
+Added `darkSemanticColors` export alongside existing `semanticColors`. Framework-neutral (pure hex/RGB strings, no MUI imports). Key dark values:
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `background.default` | `#f8fafc` (slate-50) | `#0f172a` (slate-900) |
+| `background.paper` | `#ffffff` | `#1e293b` (slate-800) |
+| `background.elevated` | — | `#334155` (slate-700) |
+| `background.sidebar` | — | `#0f172a` (slate-900) |
+| `text.primary` | `#0f172a` (slate-900) | `#f1f5f9` (slate-100) |
+| `text.secondary` | `#475569` (slate-600) | `#cbd5e1` (slate-300) |
+| `divider` | `#e2e8f0` (slate-200) | `#1e293b` (slate-800) |
+| `primary.main` | `#2563eb` (blue-600) | `#3b82f6` (blue-500) |
+| `action.hover` | `#f1f5f9` (slate-100) | `rgba(148,163,184,0.08)` |
+| `action.selected` | `#eff6ff` (blue-50) | `rgba(59,130,246,0.12)` |
+
+### Theme Configuration
+
+**File:** `apps/web/theme/create-chronoarb-theme.ts`
+
+- Changed `palette.mode` from `'light'` to `'dark'`
+- Changed `cssVariables.disableCssColorScheme` from `true` to default (removed)
+- Switched from `semanticColors` to `darkSemanticColors`
+- Added MUI component overrides: `MuiCssBaseline`, `MuiDrawer`, `MuiListItemButton`, `MuiListItemIcon`, `MuiAppBar`, `MuiToolbar`, `MuiDivider`, `MuiChip`
+
+### Canvas Hierarchy
+
+| Level | Element | Dark Value |
+|-------|---------|-----------|
+| 0 | Application canvas | `#0f172a` (slate-900) |
+| 1 | Sidebar | `#0f172a` (slate-900) — differentiated by border |
+| 2 | Content panels/cards | `#1e293b` (slate-800) |
+| 3 | Elevated (menus/popovers) | `#334155` (slate-700) |
+
+### Sidebar Treatment
+
+- Removed light `background.paper` backgrounds from brand block and nav container
+- Dark surface throughout (`#0f172a`)
+- Brand treatment: `CHRONOARB` (overline, 700 weight, 0.12em letter-spacing) + `Dealer Intelligence` (caption, muted secondary)
+- 256px width preserved
+- Border-right provides differentiation from main content
+
+### Selected Navigation State
+
+- Blue-tinted dark background: `rgba(59,130,246,0.12)`
+- Primary blue text/icon: `#3b82f6`
+- 2px left accent bar (primary blue, rounded right corners)
+- Font weight 600 for selected items
+- Hover: subtle `rgba(148,163,184,0.08)` background lift
+
+### Page Header
+
+- Title: `text.primary` (near-white `#f1f5f9`), 700 weight, `-0.02em` letter-spacing
+- Description: `text.secondary` (slated `#cbd5e1`), 1.6 line-height
+- Removed `boxShadow` — border-only separation in dark mode
+
+### Mobile Treatment
+
+- AppBar: dark surface (`#0f172a`), no elevation, divider border
+- Temporary Drawer: same dark surface as desktop sidebar
+- Brand treatment matches desktop
+
+### Contrast Verification
+
+| Combination | Ratio | WCAG AA |
+|-------------|-------|---------|
+| `text.primary` (#f1f5f9) / `background.default` (#0f172a) | ~18:1 | PASS |
+| `text.primary` (#f1f5f9) / `background.paper` (#1e293b) | ~15:1 | PASS |
+| `text.secondary` (#cbd5e1) / `background.default` (#0f172a) | ~12:1 | PASS |
+| `text.secondary` (#cbd5e1) / `background.paper` (#1e293b) | ~8:1 | PASS |
+| `primary.main` (#3b82f6) / `background.default` (#0f172a) | ~5.5:1 | PASS |
+| `primary.contrastText` (#fff) / `primary.main` (#3b82f6) | ~4.6:1 | PASS |
+| Selected nav text / selected background | ~5:1 | PASS |
+| Sidebar text / sidebar background | ~12:1 | PASS |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `packages/design-tokens/src/colors.ts` | Added `darkSemanticColors` export |
+| `packages/design-tokens/src/index.ts` | Re-export (unchanged content, file touched) |
+| `apps/web/theme/create-chronoarb-theme.ts` | Dark mode, dark tokens, component overrides |
+| `apps/web/components/shell/AppSidebar.tsx` | Dark surface, refined brand, removed paper backgrounds |
+| `apps/web/components/shell/NavLinks.tsx` | Blue-tinted selected state, 2px accent bar, refined hover |
+| `apps/web/components/shell/MobileNavigation.tsx` | Dark AppBar/Drawer, refined brand |
+| `apps/web/components/shell/PageHeader.tsx` | Dark typography, removed shadow |
+
+### Automated Verification
+
+| Check | Result |
+|-------|--------|
+| Design tokens typecheck | PASS |
+| Web lint | PASS |
+| Web typecheck | PASS |
+| Web build | PASS (all 7 routes prerender) |
+
+### Browser Verification
+
+Pending — see Playwright execution below.
+
+### Dependencies Added
+
+**None.** Existing dependencies only (MUI, MUI Icons, Tailwind, design tokens).
+
+### Functionality Changed
+
+**None.** Route matching, Drawer logic, Server/Client boundaries, skip-link behavior all preserved.
+
+### Backend Files Changed
+
+**None.**

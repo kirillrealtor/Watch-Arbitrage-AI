@@ -19,9 +19,9 @@ export const colors = {
     300: '#93c5fd',
     400: '#60a5fa',
     500: '#3b82f6',
-    600: '#2563eb', // Primary
-    700: '#1d4ed8', // Primary hover
-    800: '#1e40af', // Primary active
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
     900: '#1e3a8a',
     950: '#172554',
   },
@@ -32,8 +32,8 @@ export const colors = {
     300: '#6ee7b7',
     400: '#34d399',
     500: '#10b981',
-    600: '#059669', // Success
-    700: '#047857', // Opp positive
+    600: '#059669',
+    700: '#047857',
     800: '#065f46',
     900: '#064e3b',
     950: '#022c22',
@@ -44,7 +44,7 @@ export const colors = {
     200: '#fde68a',
     300: '#fcd34d',
     400: '#fbbf24',
-    500: '#f59e0b', // Warning
+    500: '#f59e0b',
     600: '#d97706',
     700: '#b45309',
     800: '#92400e',
@@ -58,8 +58,8 @@ export const colors = {
     300: '#fda4af',
     400: '#fb7185',
     500: '#f43f5e',
-    600: '#e11d48', // Danger/Error
-    700: '#be123c', // Opp risk
+    600: '#e11d48',
+    700: '#be123c',
     800: '#9f1239',
     900: '#881337',
     950: '#4c0519',
@@ -69,7 +69,6 @@ export const colors = {
   transparent: 'transparent',
 };
 
-// Semantic roles (light theme mappings)
 export const semanticColors = {
   background: {
     default: colors.slate[50],
@@ -77,7 +76,7 @@ export const semanticColors = {
   },
   text: {
     primary: colors.slate[900],
-    secondary: colors.slate[600], // Increased contrast (slate-500 failed on slate-50)
+    secondary: colors.slate[600],
   },
   divider: colors.slate[200],
   primary: {
@@ -87,7 +86,7 @@ export const semanticColors = {
     contrastText: colors.white,
   },
   success: {
-    main: colors.emerald[700], // Increased contrast for white text
+    main: colors.emerald[700],
     light: colors.emerald[600],
     dark: colors.emerald[800],
     contrastText: colors.white,
@@ -99,7 +98,7 @@ export const semanticColors = {
     contrastText: colors.slate[900],
   },
   error: {
-    main: colors.rose[700], // Increased contrast for white text
+    main: colors.rose[700],
     light: colors.rose[600],
     dark: colors.rose[800],
     contrastText: colors.white,
@@ -110,7 +109,6 @@ export const semanticColors = {
     dark: colors.blue[600],
     contrastText: colors.white,
   },
-  // Custom ChronoArb roles
   chronoarb: {
     opportunityPositive: colors.emerald[700],
     opportunityRisk: colors.rose[700],
@@ -122,5 +120,62 @@ export const semanticColors = {
     disabled: colors.slate[300],
     disabledBackground: colors.slate[100],
     focus: colors.blue[500],
-  }
+  },
+};
+
+export const darkSemanticColors = {
+  background: {
+    default: colors.slate[900],
+    paper: colors.slate[800],
+    elevated: colors.slate[700],
+    sidebar: colors.slate[900],
+  },
+  text: {
+    primary: colors.slate[100],
+    secondary: colors.slate[300],
+    disabled: colors.slate[500],
+  },
+  divider: colors.slate[800],
+  primary: {
+    main: colors.blue[500],
+    light: colors.blue[400],
+    dark: colors.blue[600],
+    contrastText: colors.white,
+  },
+  success: {
+    main: colors.emerald[500],
+    light: colors.emerald[400],
+    dark: colors.emerald[600],
+    contrastText: colors.white,
+  },
+  warning: {
+    main: colors.amber[500],
+    light: colors.amber[400],
+    dark: colors.amber[600],
+    contrastText: colors.slate[900],
+  },
+  error: {
+    main: colors.rose[500],
+    light: colors.rose[400],
+    dark: colors.rose[600],
+    contrastText: colors.white,
+  },
+  info: {
+    main: colors.blue[500],
+    light: colors.blue[400],
+    dark: colors.blue[600],
+    contrastText: colors.white,
+  },
+  chronoarb: {
+    opportunityPositive: colors.emerald[500],
+    opportunityRisk: colors.rose[500],
+  },
+  action: {
+    active: colors.slate[400],
+    hover: 'rgba(148, 163, 184, 0.08)',
+    selected: 'rgba(59, 130, 246, 0.12)',
+    disabled: colors.slate[500],
+    disabledBackground: 'rgba(148, 163, 184, 0.04)',
+    focus: colors.blue[500],
+  },
 };

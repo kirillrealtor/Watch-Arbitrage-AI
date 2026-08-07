@@ -1,10 +1,10 @@
 import { createTheme } from '@mui/material/styles';
-import { 
-  semanticColors, 
-  typography, 
-  spacing, 
+import {
+  darkSemanticColors,
+  typography,
+  spacing,
   radii,
-  breakpoints 
+  breakpoints,
 } from '@chronoarb/design-tokens';
 
 declare module '@mui/material/styles' {
@@ -32,31 +32,30 @@ declare module '@mui/material/styles' {
 export const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class',
-    disableCssColorScheme: true, // We are explicitly enforcing light theme only for MVP
   },
   palette: {
-    mode: 'light',
-    background: semanticColors.background,
-    text: semanticColors.text,
-    divider: semanticColors.divider,
-    primary: semanticColors.primary,
-    success: semanticColors.success,
-    warning: semanticColors.warning,
-    error: semanticColors.error,
-    info: semanticColors.info,
+    mode: 'dark',
+    background: darkSemanticColors.background,
+    text: darkSemanticColors.text,
+    divider: darkSemanticColors.divider,
+    primary: darkSemanticColors.primary,
+    success: darkSemanticColors.success,
+    warning: darkSemanticColors.warning,
+    error: darkSemanticColors.error,
+    info: darkSemanticColors.info,
     opportunityPositive: {
-      main: semanticColors.chronoarb.opportunityPositive,
+      main: darkSemanticColors.chronoarb.opportunityPositive,
     },
     opportunityRisk: {
-      main: semanticColors.chronoarb.opportunityRisk,
+      main: darkSemanticColors.chronoarb.opportunityRisk,
     },
     action: {
-      active: semanticColors.action.active,
-      hover: semanticColors.action.hover,
-      selected: semanticColors.action.selected,
-      disabled: semanticColors.action.disabled,
-      disabledBackground: semanticColors.action.disabledBackground,
-      focus: semanticColors.action.focus,
+      active: darkSemanticColors.action.active,
+      hover: darkSemanticColors.action.hover,
+      selected: darkSemanticColors.action.selected,
+      disabled: darkSemanticColors.action.disabled,
+      disabledBackground: darkSemanticColors.action.disabledBackground,
+      focus: darkSemanticColors.action.focus,
     },
   },
   typography: {
@@ -69,9 +68,9 @@ export const theme = createTheme({
     caption: typography.caption,
     overline: typography.overline,
     button: {
-      textTransform: 'none', // Prevent default uppercase for buttons
+      textTransform: 'none',
       fontWeight: 500,
-    }
+    },
   },
   spacing: spacing,
   shape: {
@@ -79,6 +78,14 @@ export const theme = createTheme({
   },
   breakpoints: breakpoints,
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: darkSemanticColors.background.default,
+          color: darkSemanticColors.text.primary,
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -92,7 +99,67 @@ export const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundImage: 'none', // Remove elevation overlay
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: darkSemanticColors.background.sidebar,
+          borderRight: `1px solid ${darkSemanticColors.divider}`,
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: darkSemanticColors.action.hover,
+          },
+          '&.Mui-selected': {
+            backgroundColor: darkSemanticColors.action.selected,
+            '&:hover': {
+              backgroundColor: darkSemanticColors.action.selected,
+            },
+          },
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: darkSemanticColors.background.sidebar,
+          borderBottom: `1px solid ${darkSemanticColors.divider}`,
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          minHeight: 64,
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: darkSemanticColors.divider,
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontWeight: 500,
         },
       },
     },

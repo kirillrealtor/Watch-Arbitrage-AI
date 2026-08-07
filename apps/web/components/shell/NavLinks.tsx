@@ -48,40 +48,41 @@ export function NavLinks({ onItemClick }: NavLinksProps) {
                   py: 0.75,
                   px: 1.5,
                   position: 'relative',
-                  color: 'text.secondary',
-                  transition: 'all 0.2s ease-in-out',
+                  color: active ? 'primary.main' : 'text.secondary',
+                  transition: 'all 0.15s ease-in-out',
                   '&:hover': {
                     bgcolor: 'action.hover',
                     color: 'text.primary',
                   },
                   '&.Mui-selected': {
-                    bgcolor: 'transparent',
+                    bgcolor: 'action.selected',
                     color: 'primary.main',
+                    fontWeight: 600,
                     '&:hover': {
-                      bgcolor: 'action.hover',
+                      bgcolor: 'action.selected',
                     },
                     '&::before': {
                       content: '""',
                       position: 'absolute',
-                      left: -8, // pull outside the padding
-                      top: '15%',
-                      bottom: '15%',
-                      width: 3,
+                      left: 0,
+                      top: '20%',
+                      bottom: '20%',
+                      width: 2,
                       bgcolor: 'primary.main',
-                      borderRadius: '0 4px 4px 0',
-                    }
-                  }
+                      borderRadius: '0 2px 2px 0',
+                    },
+                  },
                 }}
               >
-                <ListItemIcon 
-                  sx={{ 
+                <ListItemIcon
+                  sx={{
                     minWidth: 36,
                     color: 'inherit',
                   }}
                 >
                   <Icon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText 
+                <ListItemText
                   primary={
                     <Typography
                       variant="body2"
