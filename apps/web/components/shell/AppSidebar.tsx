@@ -20,12 +20,43 @@ export function AppSidebar() {
       }}
     >
       <nav aria-label="Sidebar navigation" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <Box sx={{ p: 3, display: 'flex', alignItems: 'center', height: 64 }}>
-          <Typography variant="h6" color="text.primary" sx={{ fontWeight: 'bold' }}>
-            ChronoArb
+        <Box 
+          sx={{ 
+            p: 3, 
+            display: 'flex', 
+            flexDirection: 'column',
+            justifyContent: 'center',
+            minHeight: 72,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+            mb: 2,
+            bgcolor: 'background.paper',
+          }}
+        >
+          <Typography 
+            variant="overline" 
+            color="text.primary" 
+            sx={{ 
+              fontWeight: 700, 
+              letterSpacing: '0.1em',
+              lineHeight: 1.2
+            }}
+          >
+            CHRONOARB
+          </Typography>
+          <Typography 
+            variant="caption" 
+            color="text.secondary"
+            sx={{ 
+              fontWeight: 500,
+              letterSpacing: '0.02em',
+              mt: 0.5
+            }}
+          >
+            Dealer Intelligence
           </Typography>
         </Box>
-        <Box sx={{ overflow: 'auto', flex: 1 }}>
+        <Box sx={{ overflow: 'auto', flex: 1, bgcolor: 'background.paper' }}>
           <NavLinks />
         </Box>
       </nav>

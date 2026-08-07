@@ -1,17 +1,37 @@
 import { PageHeader } from '../../../components/shell/PageHeader';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
+import ConstructionOutlinedIcon from '@mui/icons-material/ConstructionOutlined';
 
 export default function WatchesPage() {
   return (
     <Box>
       <PageHeader 
         title="Watches" 
-        description="Search and explore the normalized watch catalog."
+        description="Browse the normalized catalog of tracked timepieces."
       />
-      <Box className="px-4 sm:px-6 lg:px-8">
-        <Typography variant="body1" color="text.secondary">
-          Watch catalog implementation begins in a later frontend phase.
-        </Typography>
+      <Box className="px-6 sm:px-8 lg:px-10">
+        <Paper 
+          variant="outlined" 
+          sx={{ 
+            p: 4, 
+            maxWidth: 'sm', 
+            display: 'flex', 
+            gap: 2, 
+            alignItems: 'flex-start',
+            bgcolor: 'background.paper',
+            borderColor: 'divider',
+          }}
+        >
+          <ConstructionOutlinedIcon color="disabled" />
+          <Box>
+            <Typography variant="subtitle2" color="text.primary" sx={{ mb: 0.5, fontWeight: 600 }}>
+              Development placeholder
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+              Watch catalog implementation begins in a later frontend phase.
+            </Typography>
+          </Box>
+        </Paper>
       </Box>
     </Box>
   );

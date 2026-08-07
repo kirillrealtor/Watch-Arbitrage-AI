@@ -20,7 +20,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <AppSidebar />
 
       {/* Main Column */}
-      <div className="flex flex-col flex-1 min-w-0 min-h-0">
+      <div 
+        className="flex flex-col flex-1 min-w-0 min-h-0"
+        style={{ backgroundColor: 'var(--mui-palette-background-default)' }}
+      >
         {/* Mobile Navigation (includes AppBar) */}
         <MobileNavigation />
 
